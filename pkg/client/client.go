@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"path"
 	"time"
 
 	"github.com/cortexproject/cortex/pkg/util/tls"
@@ -170,6 +169,5 @@ func checkResponse(r *http.Response) error {
 }
 
 func buildRequest(p, m string, endpoint *url.URL, payload []byte) (*http.Request, error) {
-	endpoint.Path = path.Join(endpoint.Path, p)
-	return http.NewRequest(m, endpoint.String(), bytes.NewBuffer(payload))
+	return http.NewRequest(m, endpoint.String()+p, bytes.NewBuffer(payload))
 }
