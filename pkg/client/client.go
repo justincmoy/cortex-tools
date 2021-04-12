@@ -158,6 +158,14 @@ func checkResponse(r *http.Response) error {
 		errMsg = fmt.Sprintf("server returned HTTP status %s: %s", r.Status, msg)
 	}
 
+	if strings.Contains(msg, "group does not exist") {
+		log.WithFields(log.Fields{
+			"status": r.Status,
+			"msg":    msg,
+		}).Debugln(errMsg)
+		return ErrResourceNotFound
+	}
+
 	if r.StatusCode == http.StatusNotFound {
 		log.WithFields(log.Fields{
 			"status": r.Status,
